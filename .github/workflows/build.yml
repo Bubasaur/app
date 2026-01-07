@@ -5,10 +5,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      # Updated to v4
+      - uses: actions/checkout@v4
 
-      # --- THIS IS THE FIX ---
-      # It deletes unnecessary pre-installed software to make room for Android
+      # Cleans up disk space to prevent crash
       - name: Free Disk Space
         uses: jlumbroso/free-disk-space@main
         with:
@@ -19,7 +19,6 @@ jobs:
           large-packages: true
           docker-images: true
           swap-storage: true
-      # -----------------------
 
       - name: Build with Buildozer
         uses: ArtemSBulgakov/buildozer-action@v1
@@ -28,8 +27,9 @@ jobs:
           command: buildozer android debug
           buildozer_version: master
 
+      # Updated to v4 (Fixes your error)
       - name: Upload APK
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: MyStoreApp
           path: bin/*.apk
