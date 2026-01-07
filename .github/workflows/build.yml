@@ -1,14 +1,14 @@
 name: Build APK
-on:
-  push:
-    branches: [ main, master ]
+on: [push]
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
 
-      # Frees up space so the build doesn't crash
+      # --- THIS IS THE FIX ---
+      # It deletes unnecessary pre-installed software to make room for Android
       - name: Free Disk Space
         uses: jlumbroso/free-disk-space@main
         with:
@@ -19,6 +19,7 @@ jobs:
           large-packages: true
           docker-images: true
           swap-storage: true
+      # -----------------------
 
       - name: Build with Buildozer
         uses: ArtemSBulgakov/buildozer-action@v1
@@ -30,5 +31,5 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v2
         with:
-          name: StoreAppAPK
+          name: MyStoreApp
           path: bin/*.apk
